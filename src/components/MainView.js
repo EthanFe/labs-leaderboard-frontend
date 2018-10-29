@@ -1,25 +1,32 @@
 import React, {Component} from 'react';
-import Graph  from './Graph';
+import Graph from './Graph';
+import Name from './Name';
 
-export class MainView extends Component {
+export default class MainView extends Component {
   componentDidMount() {
     console.log("fetchin")
     fetch("http://localhost:3000/getData")
     .then(response => response.json())
     .then((data => this.setState({labsData: data})))
   }
+
   
   render() {
-    if (this.state)
+    if (this.state) {
       return (
-        <Graph labsData={this.state.labsData}></Graph>
-        // this.state.games.map((game, index) => {
-        //   return <button key={index} onClick={() => this.props.gameClicked(game.id)}>{game.name}</button>
-        // })
+        [
+          this.state.labsData.map((user, index) => {
+            return <Name name={user.name} onClick={() => this.nameClicked(user.name)}></Name>
+          }),
+          <Graph labsData={this.state.labsData}></Graph>
+        ]
       )
-    else
+    } else {
       return null
+    }
+  }
+
+  nameClicked = (name) => {
+    console.log(name)
   }
 }
-
-export default MainView

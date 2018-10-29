@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Bar} from 'react-chartjs-2';
 
 
-export class Graph extends Component {
+export default class Graph extends Component {
   componentDidMount() {
     
   }
@@ -39,5 +39,3 @@ export class Graph extends Component {
     return max
   }
 }
-
-export default Graph
