@@ -1,0 +1,17 @@
+.refresh-button {
+  width: 180px;
+  height: 70px;
+  font-size: 30px;
+  margin: 20px;
+}
+
+.crazyButton {
+  width: 180px;
+  height: 70px;
+  font-size: 20px;
+  margin: 20px;
+}
+
+.buttonsContainer {
+  display: flex;
+}

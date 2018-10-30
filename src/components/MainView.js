@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Graph from './Graph';
 import RefreshButton from './RefreshButton';
+import "./styles.css"
 
 export default class MainView extends Component {
   componentDidMount() {
@@ -29,7 +30,8 @@ export default class MainView extends Component {
           "chelsme",
           "EthanFe",
           "jordantredaniel"
-        ]
+        ],
+        crazy: false
       }
     ))
   }
@@ -38,13 +40,20 @@ export default class MainView extends Component {
     if (this.state && this.state.labsData) {
       return (
         [
-          <RefreshButton progress={this.refreshProgress()} onClick={() => this.refreshButtonClicked()}></RefreshButton>,
-          <Graph labsData={this.state.labsData}></Graph>
+          <div className="buttonsContainer">
+            <button className="crazyButton" onClick={this.toggleCrazyMode}>Ice the Booleans</button>
+            <RefreshButton progress={this.refreshProgress()} onClick={() => this.refreshButtonClicked()}></RefreshButton>
+          </div>,
+          <Graph labsData={this.state.labsData} crazy={this.state.crazy}></Graph>
         ]
       )
     } else {
       return null
     }
+  }
+
+  toggleCrazyMode = () => {
+    this.setState({crazy: !this.state.crazy})
   }
 
   refreshButtonClicked = () => {
@@ -69,7 +78,6 @@ export default class MainView extends Component {
   checkRefreshCompletion = () => {
     if (this.refreshProgress() === 1) {
       this.submitDataToDatabase()
-      // renderChart()
     }
   }
 
@@ -79,20 +87,6 @@ export default class MainView extends Component {
     else
       return null
   }
-
-  // function renderChart() {
-  //   if (finishedLoading()) {
-  //     const loadingText = document.getElementById("loading-text")
-  //     loadingText.classList.add("invisible")
-  //     loadingText.textContent = "Done!"
-
-  //     submitDataToDatabase(dataTable)
-  //   }
-  // }
-
-  // function finishedLoading() {
-  //   return userData.length === users.length
-  // }
 
   submitDataToDatabase = () => {
     const dataTable = []

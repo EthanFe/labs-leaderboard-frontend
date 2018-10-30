@@ -4,7 +4,23 @@ import {Line} from 'react-chartjs-2';
 
 export default class Graph extends Component {
   componentDidMount() {
-    
+    // this.startCraziness()
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.crazy && !prevProps.crazy) {
+      this.startCraziness()
+    } else if (!this.props.crazy && prevProps.crazy) {
+      clearInterval(this.interval)
+    }
+  }
+
+  startCraziness = () => {
+    this.interval = setInterval(this.doCrazyShit, 50)
+  }
+
+  doCrazyShit = () => {
+    this.forceUpdate();
   }
   
   render() {
@@ -13,25 +29,51 @@ export default class Graph extends Component {
       datasets: []
     }
     for (const user of this.props.labsData) {
-      chartData.datasets.push({
-        data: user.data.map(entry => entry.score),
-        label: user.username,
-        borderColor: "#3e95cd",
-        fill: false
-      })
+      const color = this.getRandomColor()
+      if (!this.props.crazy) {
+        chartData.datasets.push({
+          data: user.data.map(entry => entry.score),
+          label: user.username,
+          // borderColor: "#3e95cd",
+          borderColor: color,
+          fill: false
+        })
+      } else {
+        const labelString = "BOOLEAN ICING"
+        chartData.datasets.push({
+          data: user.data.map(entry => entry.score),
+          label: labelString[this.props.labsData.indexOf(user)],
+          borderColor: color,
+          borderWidth: Math.random() * 10,
+          // borderDash: [Math.random() * 50, 15],
+          lineTension: Math.random(),
+          backgroundColor: color + "10",
+          // steppedLine: true;
+          fill: Math.random() > 0.5
+        })
+      }
     }
 
     return (
-      < Line data={chartData} />
+      < Line data={chartData} options={
+        {
+          legend: {
+            labels: {
+              fontSize: this.props.crazy ? 45 : 20,
+              fontStyle: "bold",
+              fontColor: "#fff"
+            }
+          },
+        }} />
     )
   }
 
-  getMaxLabs(userData) {
-    let max = 0
-    for (const user of userData) {
-      if (max < user.labs)
-        max = user.labs
+  getRandomColor = () => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
     }
-    return max
+    return color;
   }
 }
