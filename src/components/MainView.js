@@ -6,7 +6,7 @@ export default class MainView extends Component {
   componentDidMount() {
     console.log("fetchin")
     // fetch("http://localhost:3000/getData")
-    fetch("https://https://labs-leaderboard.herokuapp.com/getData")
+    fetch("https://labs-leaderboard.herokuapp.com/getData")
     .then(response => response.json())
     .then((data => this.setState({labsData: data})))
   }
