@@ -16,7 +16,7 @@ export default class MainView extends Component {
       return (
         [
           this.state.labsData.map((user, index) => {
-            return <Name name={user.name} onClick={() => this.nameClicked(user.name)}></Name>
+            return <Name name={user.username} onClick={() => this.nameClicked(user.username)}></Name>
           }),
           <Graph labsData={this.state.labsData}></Graph>
         ]
