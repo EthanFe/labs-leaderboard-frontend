@@ -20,7 +20,6 @@ export default class Graph extends Component {
         fill: false
       })
     }
-    console.log(chartData)
 
     return (
       < Line data={chartData} />
