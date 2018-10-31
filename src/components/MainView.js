@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Graph from './Graph';
 import RefreshButton from './RefreshButton';
+import CrazyButton from './CrazyButton';
 import SpeedSlider from './SpeedSlider';
 import "./styles.css"
 
@@ -44,7 +45,7 @@ export default class MainView extends Component {
         return (
           [
             <div className="buttonsContainer">
-              <button className="crazyButton" onClick={this.toggleCrazyMode}>Ice the Booleans</button>
+              <CrazyButton onClick={this.toggleCrazyMode} crazy={this.state.crazy}></CrazyButton>
               <RefreshButton progress={this.refreshProgress()} onClick={() => this.refreshButtonClicked()}></RefreshButton>
             </div>,
             <SpeedSlider onChange={this.speedChanged}></SpeedSlider>,
@@ -55,7 +56,7 @@ export default class MainView extends Component {
         return (
           [
             <div className="buttonsContainer">
-              <button className="crazyButton" onClick={this.toggleCrazyMode}>Ice the Booleans</button>
+              <CrazyButton onClick={this.toggleCrazyMode} crazy={this.state.crazy}></CrazyButton>
               <RefreshButton progress={this.refreshProgress()} onClick={() => this.refreshButtonClicked()}></RefreshButton>
             </div>,
             <Graph labsData={this.state.labsData} crazy={this.state.crazy} crazySpeed={this.state.crazySpeed}></Graph>
