@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Graph from './Graph';
 import RefreshButton from './RefreshButton';
+import SpeedSlider from './SpeedSlider';
 import "./styles.css"
 
 export default class MainView extends Component {
@@ -31,25 +32,43 @@ export default class MainView extends Component {
           "EthanFe",
           "jordantredaniel"
         ],
-        crazy: false
+        crazy: false,
+        crazySpeed: 100
       }
     ))
   }
   
   render() {
     if (this.state && this.state.labsData) {
-      return (
-        [
-          <div className="buttonsContainer">
-            <button className="crazyButton" onClick={this.toggleCrazyMode}>Ice the Booleans</button>
-            <RefreshButton progress={this.refreshProgress()} onClick={() => this.refreshButtonClicked()}></RefreshButton>
-          </div>,
-          <Graph labsData={this.state.labsData} crazy={this.state.crazy}></Graph>
-        ]
-      )
+      if (this.state.crazy) {
+        return (
+          [
+            <div className="buttonsContainer">
+              <button className="crazyButton" onClick={this.toggleCrazyMode}>Ice the Booleans</button>
+              <RefreshButton progress={this.refreshProgress()} onClick={() => this.refreshButtonClicked()}></RefreshButton>
+            </div>,
+            <SpeedSlider onChange={this.speedChanged}></SpeedSlider>,
+            <Graph labsData={this.state.labsData} crazy={this.state.crazy} crazySpeed={this.state.crazySpeed}></Graph>
+          ]
+        )
+      } else {
+        return (
+          [
+            <div className="buttonsContainer">
+              <button className="crazyButton" onClick={this.toggleCrazyMode}>Ice the Booleans</button>
+              <RefreshButton progress={this.refreshProgress()} onClick={() => this.refreshButtonClicked()}></RefreshButton>
+            </div>,
+            <Graph labsData={this.state.labsData} crazy={this.state.crazy} crazySpeed={this.state.crazySpeed}></Graph>
+          ]
+        )
+      }
     } else {
-      return null
+      return <h1>Loading...</h1>
     }
+  }
+
+  speedChanged = (event) => {
+    this.setState({crazySpeed: event.target.value})
   }
 
   toggleCrazyMode = () => {

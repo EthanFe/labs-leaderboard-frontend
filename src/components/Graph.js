@@ -4,19 +4,28 @@ import {Line} from 'react-chartjs-2';
 
 export default class Graph extends Component {
   componentDidMount() {
-    // this.startCraziness()
+    if (this.props.crazy)
+      this.startCraziness()
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.crazy && !prevProps.crazy) {
+    if (this.props.crazy && (!prevProps.crazy || 
+                             this.props.crazySpeed !== prevProps.crazySpeed)) {
       this.startCraziness()
     } else if (!this.props.crazy && prevProps.crazy) {
       clearInterval(this.interval)
     }
   }
 
+  componentWillUnmount() {
+    clearInterval(this.interval)
+  }
+
   startCraziness = () => {
-    this.interval = setInterval(this.doCrazyShit, 50)
+    clearInterval(this.interval)
+    const frameTime = 1000 / 60
+    const framesPerInterval = (101 - this.props.crazySpeed) * 60 / 100
+    this.interval = setInterval(this.doCrazyShit, frameTime * framesPerInterval)
   }
 
   doCrazyShit = () => {
