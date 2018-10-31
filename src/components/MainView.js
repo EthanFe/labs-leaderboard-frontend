@@ -14,11 +14,21 @@ export default class MainView extends Component {
     this.drawChart()
   }
 
+  componentWillUnmount() {
+    clearInterval(this.interval)
+  }
+
+  beginRefreshing = () => {
+    // immediately refresh and then do so every 15 minutes afterward
+    this.refreshButtonClicked()
+    this.interval = setInterval(this.refreshButtonClicked, 1000 * 60 * 15)
+  }
+
   drawChart = () => {
     fetch(`${this.base_url}getData`)
     .then(response => response.json())
-    .then(data => this.setState(
-      {
+    .then(data => {
+      this.setState({
         labsData: data,
         refreshing: false,
         usersToSearch: [
@@ -38,8 +48,10 @@ export default class MainView extends Component {
         ],
         crazy: false,
         crazySpeed: 100
-      }
-    ))
+      })
+      if (!this.interval)
+        this.beginRefreshing()
+    })
   }
   
   render() {
