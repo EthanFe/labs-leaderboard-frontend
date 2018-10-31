@@ -43,8 +43,8 @@ export default class Graph extends Component {
         chartData.datasets.push({
           data: user.data.map(entry => entry.score),
           label: user.username,
-          // borderColor: "#3e95cd",
-          borderColor: color,
+          borderColor: "#3e95cd",
+          // borderColor: color,
           fill: false
         })
       } else {
@@ -58,7 +58,8 @@ export default class Graph extends Component {
           lineTension: Math.random(),
           backgroundColor: color + "10",
           // steppedLine: true;
-          fill: Math.random() > 0.5
+          // fill: Math.random() > 0.5
+          fill: false
         })
       }
     }

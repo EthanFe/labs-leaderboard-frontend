@@ -7,12 +7,15 @@ import "./styles.css"
 
 export default class MainView extends Component {
   componentDidMount() {
+    // this is good code.
+    this.base_url = "https://labs-leaderboard.herokuapp.com/"
+    // this.base_url = "http://localhost:3000/"
+
     this.drawChart()
   }
 
   drawChart = () => {
-    fetch("https://labs-leaderboard.herokuapp.com/getData")
-    // fetch("http://localhost:3000/getData")
+    fetch(`${this.base_url}getData`)
     .then(response => response.json())
     .then(data => this.setState(
       {
@@ -77,13 +80,9 @@ export default class MainView extends Component {
   }
 
   refreshButtonClicked = () => {
-    // this is good code.
-    const base_url = "https://labs-leaderboard.herokuapp.com/"
-    // const base_url = "http://localhost:3000/"
-
     this.setState({refreshData: [], refreshing: true})
     for (const user of this.state.usersToSearch) {
-      fetch(`${base_url}users/${user}`)
+      fetch(`${this.base_url}users/${user}`)
       .then(response => response.json())
       .then(this.addToUserData)
     }
@@ -114,8 +113,7 @@ export default class MainView extends Component {
       dataTable.push([user.name, user.labs])
     }
 
-    const base_url = "https://labs-leaderboard.herokuapp.com/"
-    let url = base_url + "saveData"
+    const url = this.base_url + "saveData"
 
     let data = {}
     for (const user of dataTable) {
