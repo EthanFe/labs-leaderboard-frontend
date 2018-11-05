@@ -63,10 +63,8 @@ export default class Graph extends Component {
     console.log(userData, chartData)
 
     for (const user of userData) {
-      // const color = this.getRandomColor()
-      const color = colors[userData.indexOf(user)]
       if (!this.props.crazy) {
-
+        const color = colors[userData.indexOf(user)]
         chartData.datasets.push({
           data: user.labs.map(day => day.labs),
           label: user.name,
@@ -76,6 +74,7 @@ export default class Graph extends Component {
         })
         
       } else {
+        const color = this.getRandomColor()
         const labelString = "BOOLEANICING"
         chartData.datasets.push({
           data: user.labs.map(day => day.labs),
