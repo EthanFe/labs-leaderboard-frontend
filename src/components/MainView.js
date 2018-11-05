@@ -8,8 +8,8 @@ import "./styles.css"
 export default class MainView extends Component {
   componentDidMount() {
     // this is good code.
-    this.base_url = "https://labs-leaderboard.herokuapp.com/"
-    // this.base_url = "http://localhost:3000/"
+    // this.base_url = "https://labs-leaderboard.herokuapp.com/"
+    this.base_url = "http://localhost:3000/"
 
     this.setState({
       labsData: [],
@@ -60,11 +60,7 @@ export default class MainView extends Component {
   }
 
   parseLabData = (labsData) => {
-    const firstDay = new Date()
-    firstDay.setFullYear(2018)
-    firstDay.setMonth(7)
-    firstDay.setDate(27)
-    firstDay.setHours(0,0,0,0)
+    const firstDay = this.getFirstDay()
 
     const labsByDay = {}
     const currentDay = new Date(firstDay.getTime())
@@ -87,6 +83,15 @@ export default class MainView extends Component {
     daysArray.sort((day1, day2) => day1.date < day2.date)
     console.log(daysArray)
     return daysArray
+  }
+
+  getFirstDay = () => {
+    const firstDay = new Date()
+    firstDay.setFullYear(2018)
+    firstDay.setMonth(7)
+    firstDay.setDate(27)
+    firstDay.setHours(0,0,0,0)
+    return firstDay
   }
   
   render() {
