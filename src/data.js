@@ -34,3 +34,14 @@ export const users = [{username: "kapham2", id: "369995"},
 {username: "chelsme", id: "360601"},
 {username: "EthanFe", id: "318688"},
 {username: "jordantredaniel", id: "288018"}]
+
+export const modules = [
+  {name: "some prework thing", id: 10415},
+  {name: "javascript technical application", id: 18313},
+  {name: "bootcamp prep", id: 19381},
+  {name: "ruby", id: 25054},
+  {name: "rails", id: 25055},
+  {name: "javascript", id: 25900},
+  {name: "react", id: 42492},
+  {name: "some ta shit", id: 31060},
+]

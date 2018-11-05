@@ -39,7 +39,6 @@ export default class Graph extends Component {
       labels: userData[0].labs.map(day => day.date),
       datasets: []
     }
-    console.log(userData, chartData)
 
     for (const user of userData) {
       if (!this.props.crazy) {

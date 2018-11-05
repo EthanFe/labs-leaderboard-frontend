@@ -3,7 +3,7 @@ import Graph from './Graph';
 import RefreshButton from './RefreshButton';
 import CrazyButton from './CrazyButton';
 import SpeedSlider from './SpeedSlider';
-import {users} from "../data.js"
+import {users, modules} from "../data.js"
 import "./styles.css"
 
 export default class MainView extends Component {
@@ -48,10 +48,13 @@ export default class MainView extends Component {
   }
 
   parseLabData = (labsData) => {
+    const module_id = modules[6].id
+    labsData = labsData.filter(lab => lab.track_id === module_id)
+
     const firstDay = this.getFirstDay()
 
     const labsByDay = {}
-    const currentDay = new Date(firstDay.getTime())
+    const currentDay = new Date(firstDay.getTime()) // create a copy of the date object so we dont accidentally modify firstDay
     while (currentDay < new Date()) {
       for (let i = labsData.length - 1; i >= 0; i--) {
         labsByDay[currentDay] = labsByDay[currentDay] || 0
@@ -69,7 +72,6 @@ export default class MainView extends Component {
       daysArray.push({date: day, labs: labsByDay[day]})
     }
     daysArray.sort((day1, day2) => day1.date < day2.date)
-    console.log(daysArray)
     return daysArray
   }
 
