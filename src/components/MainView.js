@@ -11,7 +11,13 @@ export default class MainView extends Component {
     this.base_url = "https://labs-leaderboard.herokuapp.com/"
     // this.base_url = "http://localhost:3000/"
 
-    this.drawChart()
+    this.setState({
+      labsData: [],
+      refreshing: false,
+      crazy: false,
+      crazySpeed: 100
+    })
+    this.fetchData()
   }
 
   componentWillUnmount() {
@@ -24,38 +30,67 @@ export default class MainView extends Component {
     this.interval = setInterval(this.refreshButtonClicked, 1000 * 60 * 15)
   }
 
-  drawChart = () => {
-    fetch(`${this.base_url}getData`)
-    .then(response => response.json())
-    .then(data => {
-      this.setState({
-        labsData: data,
-        refreshing: false,
-        usersToSearch: [
-          "kapham2",
-          "Richardojo86",
-          "nickluong",
-          "gwatson86",
-          "spraguesy",
-          "HeadyT0pper",
-          "V10LET",
-          "mwilliamszoe",
-          "NaebIis",
-          "sparkbold-git",
-          "chelsme",
-          "EthanFe",
-          "jordantredaniel"
-        ],
-        crazy: false,
-        crazySpeed: 100
-      })
-      if (!this.interval)
-        this.beginRefreshing()
+  fetchData = () => {
+    const users = [{username: "kapham2", id: "369995"},
+                   {username: "nickluong", id: "286291"},
+                   {username: "gwatson86", id: "367270"},
+                   {username: "spraguesy", id: "304978"},
+                   {username: "HeadyT0pper", id: "316733"},
+                   {username: "V10LET", id: "371896"},
+                   {username: "mwilliamszoe", id: "268776"},
+                   {username: "NaebIis", id: "325649"},
+                   {username: "sparkbold-git", id: "42003"},
+                   {username: "chelsme", id: "360601"},
+                   {username: "EthanFe", id: "318688"},
+                   {username: "jordantredaniel", id: "288018"}]
+
+    for (const user of users) {
+      fetch(`${this.base_url}learnapidata/${user.id}`)
+      .then(response => response.json())
+      .then(data => this.drawChart(data, user.username))
+    }
+  }
+
+  drawChart = (data, username) => {
+    this.setState({labsData: 
+      [...this.state.labsData].concat({name: username, labs: this.parseLabData(data)})
     })
+    //   if (!this.interval)
+    //     this.beginRefreshing()
+  }
+
+  parseLabData = (labsData) => {
+    const firstDay = new Date()
+    firstDay.setFullYear(2018)
+    firstDay.setMonth(7)
+    firstDay.setDate(27)
+    firstDay.setHours(0,0,0,0)
+
+    const labsByDay = {}
+    const currentDay = new Date(firstDay.getTime())
+    while (currentDay < new Date()) {
+      for (let i = labsData.length - 1; i >= 0; i--) {
+        labsByDay[currentDay] = labsByDay[currentDay] || 0
+        if (new Date(labsData[i].occurred_at) < currentDay) {
+          labsByDay[currentDay]++
+        } else {
+          break
+        }
+      }
+      currentDay.setDate(currentDay.getDate() + 1)
+    }
+
+    const daysArray = []
+    for (const day in labsByDay) {
+      daysArray.push({date: day, labs: labsByDay[day]})
+    }
+    daysArray.sort((day1, day2) => day1.date < day2.date)
+    console.log(daysArray)
+    return daysArray
   }
   
   render() {
-    if (this.state && this.state.labsData) {
+    if (this.state && this.state.labsData.length > 0) {
       if (this.state.crazy) {
         return (
           [
@@ -92,12 +127,12 @@ export default class MainView extends Component {
   }
 
   refreshButtonClicked = () => {
-    this.setState({refreshData: [], refreshing: true})
-    for (const user of this.state.usersToSearch) {
-      fetch(`${this.base_url}users/${user}`)
-      .then(response => response.json())
-      .then(this.addToUserData)
-    }
+    // this.setState({refreshData: [], refreshing: true})
+    // for (const user of this.state.usersToSearch) {
+    //   fetch(`${this.base_url}users/${user}`)
+    //   .then(response => response.json())
+    //   .then(this.addToUserData)
+    // }
   }
 
   addToUserData = (data) => {
