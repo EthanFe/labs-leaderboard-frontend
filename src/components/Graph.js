@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Line} from 'react-chartjs-2';
+import {colors} from "../data.js"
 
 export default class Graph extends Component {
   componentDidMount() {
@@ -32,28 +33,6 @@ export default class Graph extends Component {
   }
   
   render() {
-    const colors = [
-      "#ef5777",
-      "#575fcf",
-      "#4bcffa",
-      "#34e7e4",
-      "#0be881",
-      "#f53b57",
-      "#3c40c6",
-      "#0fbcf9",
-      "#00d8d6",
-      "#05c46b",
-      "#ffc048",
-      "#ffdd59",
-      "#ff5e57",
-      "#d2dae2",
-      "#485460",
-      "#ffa801",
-      "#ffd32a",
-      "#ff3f34",
-      "#808e9b",
-      "#1e272e"
-    ]
     const userData = this.props.labsData
 
     const chartData = {
@@ -114,11 +93,12 @@ export default class Graph extends Component {
   }
 
   getRandomColor = () => {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
+    // const letters = '0123456789ABCDEF';
+    // let color = '#';
+    // for (let i = 0; i < 6; i++) {
+    //   color += letters[Math.floor(Math.random() * 16)];
+    // }
+    // return color;
+    return colors[Math.floor(Math.random() * colors.length)]
   }
 }

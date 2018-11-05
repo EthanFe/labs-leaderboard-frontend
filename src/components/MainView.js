@@ -3,6 +3,7 @@ import Graph from './Graph';
 import RefreshButton from './RefreshButton';
 import CrazyButton from './CrazyButton';
 import SpeedSlider from './SpeedSlider';
+import {users} from "../data.js"
 import "./styles.css"
 
 export default class MainView extends Component {
@@ -31,19 +32,6 @@ export default class MainView extends Component {
   }
 
   fetchData = () => {
-    const users = [{username: "kapham2", id: "369995"},
-                   {username: "nickluong", id: "286291"},
-                   {username: "gwatson86", id: "367270"},
-                   {username: "spraguesy", id: "304978"},
-                   {username: "HeadyT0pper", id: "316733"},
-                   {username: "V10LET", id: "371896"},
-                   {username: "mwilliamszoe", id: "268776"},
-                   {username: "NaebIis", id: "325649"},
-                   {username: "sparkbold-git", id: "42003"},
-                   {username: "chelsme", id: "360601"},
-                   {username: "EthanFe", id: "318688"},
-                   {username: "jordantredaniel", id: "288018"}]
-
     for (const user of users) {
       fetch(`${this.base_url}learnapidata/${user.id}`)
       .then(response => response.json())
