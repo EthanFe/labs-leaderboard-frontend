@@ -65,7 +65,7 @@ export default class Graph extends Component {
     for (const user of userData) {
       // const color = this.getRandomColor()
       const color = colors[userData.indexOf(user)]
-      // if (!this.props.crazy) {
+      if (!this.props.crazy) {
 
         chartData.datasets.push({
           data: user.labs.map(day => day.labs),
@@ -75,21 +75,21 @@ export default class Graph extends Component {
           fill: false
         })
         
-      // } else {
-      //   const labelString = "BOOLEAN ICING"
-      //   chartData.datasets.push({
-      //     data: user.data.map(entry => entry.score),
-      //     label: labelString[this.props.labsData.indexOf(user)],
-      //     borderColor: color,
-      //     borderWidth: Math.random() * 10,
-      //     // borderDash: [Math.random() * 50, 15],
-      //     lineTension: Math.random(),
-      //     backgroundColor: color + "10",
-      //     // steppedLine: true;
-      //     // fill: Math.random() > 0.5
-      //     fill: false
-      //   })
-      // }
+      } else {
+        const labelString = "BOOLEANICING"
+        chartData.datasets.push({
+          data: user.labs.map(day => day.labs),
+          label: labelString[userData.indexOf(user)],
+          borderColor: color,
+          borderWidth: Math.random() * 10,
+          borderDash: [Math.random() * 50, 15],
+          lineTension: Math.random(),
+          backgroundColor: color + "10",
+          // steppedLine: true;
+          // fill: Math.random() > 0.5
+          fill: false
+        })
+      }
     }
 
     return (
