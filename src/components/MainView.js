@@ -49,7 +49,7 @@ export default class MainView extends Component {
 
   parseLabData = (labsData) => {
     const module_id = modules[6].id
-    labsData = labsData.filter(lab => lab.track_id === module_id)
+    // labsData = labsData.filter(lab => lab.track_id === module_id)
 
     const firstDay = this.getFirstDay()
 
@@ -86,28 +86,16 @@ export default class MainView extends Component {
   
   render() {
     if (this.state && this.state.labsData.length > 0) {
-      if (this.state.crazy) {
-        return (
-          [
-            <div className="buttonsContainer">
-              <CrazyButton onClick={this.toggleCrazyMode} crazy={this.state.crazy}></CrazyButton>
-              <RefreshButton progress={this.refreshProgress()} onClick={() => this.refreshButtonClicked()}></RefreshButton>
-            </div>,
-            <SpeedSlider onChange={this.speedChanged}></SpeedSlider>,
-            <Graph labsData={this.state.labsData} crazy={this.state.crazy} crazySpeed={this.state.crazySpeed}></Graph>
-          ]
-        )
-      } else {
-        return (
-          [
-            <div className="buttonsContainer">
-              <CrazyButton onClick={this.toggleCrazyMode} crazy={this.state.crazy}></CrazyButton>
-              <RefreshButton progress={this.refreshProgress()} onClick={() => this.refreshButtonClicked()}></RefreshButton>
-            </div>,
-            <Graph labsData={this.state.labsData} crazy={this.state.crazy} crazySpeed={this.state.crazySpeed}></Graph>
-          ]
-        )
-      }
+      return (
+        [
+          <div className="buttonsContainer">
+            <CrazyButton onClick={this.toggleCrazyMode} crazy={this.state.crazy}></CrazyButton>
+            <RefreshButton progress={this.refreshProgress()} onClick={() => this.refreshButtonClicked()}></RefreshButton>
+          </div>,
+          this.state.crazy ? <SpeedSlider onChange={this.speedChanged}></SpeedSlider> : null,
+          <Graph labsData={this.state.labsData} crazy={this.state.crazy} crazySpeed={this.state.crazySpeed}></Graph>
+        ]
+      )
     } else {
       return <h1>Loading...</h1>
     }

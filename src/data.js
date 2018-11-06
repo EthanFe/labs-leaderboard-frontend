@@ -33,7 +33,9 @@ export const users = [{username: "kapham2", id: "369995"},
 {username: "sparkbold-git", id: "42003"},
 {username: "chelsme", id: "360601"},
 {username: "EthanFe", id: "318688"},
-{username: "jordantredaniel", id: "288018"}]
+{username: "jordantredaniel", id: "288018"},
+// {username: "morgvanny", id: "3913"}
+]
 
 export const modules = [
   {name: "some prework thing", id: 10415},
