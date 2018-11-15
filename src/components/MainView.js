@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import Graph from './Graph';
 import RefreshButton from './RefreshButton';
 import CrazyButton from './CrazyButton';
 import SpeedSlider from './SpeedSlider';
-import {users, modules} from "../data.js"
+import {users} from "../data.js"
 import "./styles.css"
+import ModuleFilter from './ModuleFilter';
+import GraphDataManager from './GraphDataManager';
 
 export default class MainView extends Component {
   componentDidMount() {
@@ -16,7 +17,8 @@ export default class MainView extends Component {
       labsData: [],
       refreshing: false,
       crazy: false,
-      crazySpeed: 100
+      crazySpeed: 100,
+      moduleFilter: null
     })
     this.fetchData()
   }
@@ -41,47 +43,10 @@ export default class MainView extends Component {
 
   drawChart = (data, username) => {
     this.setState({labsData: 
-      [...this.state.labsData].concat({name: username, labs: this.parseLabData(data)})
+      [...this.state.labsData, {name: username, labs: data.reverse()}]
     })
     //   if (!this.interval)
     //     this.beginRefreshing()
-  }
-
-  parseLabData = (labsData) => {
-    const module_id = modules[6].id
-    // labsData = labsData.filter(lab => lab.track_id === module_id)
-
-    const firstDay = this.getFirstDay()
-
-    const labsByDay = {}
-    const currentDay = new Date(firstDay.getTime()) // create a copy of the date object so we dont accidentally modify firstDay
-    while (currentDay < new Date()) {
-      for (let i = labsData.length - 1; i >= 0; i--) {
-        labsByDay[currentDay] = labsByDay[currentDay] || 0
-        if (new Date(labsData[i].occurred_at) < currentDay) {
-          labsByDay[currentDay]++
-        } else {
-          break
-        }
-      }
-      currentDay.setDate(currentDay.getDate() + 1)
-    }
-
-    const daysArray = []
-    for (const day in labsByDay) {
-      daysArray.push({date: day, labs: labsByDay[day]})
-    }
-    daysArray.sort((day1, day2) => day1.date < day2.date)
-    return daysArray
-  }
-
-  getFirstDay = () => {
-    const firstDay = new Date()
-    firstDay.setFullYear(2018)
-    firstDay.setMonth(7)
-    firstDay.setDate(27)
-    firstDay.setHours(0,0,0,0)
-    return firstDay
   }
   
   render() {
@@ -91,14 +56,28 @@ export default class MainView extends Component {
           <div className="buttonsContainer">
             <CrazyButton onClick={this.toggleCrazyMode} crazy={this.state.crazy}></CrazyButton>
             <RefreshButton progress={this.refreshProgress()} onClick={() => this.refreshButtonClicked()}></RefreshButton>
+            <ModuleFilter onChange={this.setModuleFilter} moduleFilter={this.state.moduleFilter}></ModuleFilter>
+            <input type="checkbox" checked={this.state.displayCumulative} onChange={this.setDisplayCumulative} />
           </div>,
           this.state.crazy ? <SpeedSlider onChange={this.speedChanged}></SpeedSlider> : null,
-          <Graph labsData={this.state.labsData} crazy={this.state.crazy} crazySpeed={this.state.crazySpeed}></Graph>
+          <GraphDataManager labsData={this.state.labsData}
+                            crazy={this.state.crazy}
+                            crazySpeed={this.state.crazySpeed}
+                            moduleFilter={this.state.moduleFilter}
+                            displayCumulative={this.state.displayCumulative}/>
         ]
       )
     } else {
       return <h1>Loading...</h1>
     }
+  }
+
+  setDisplayCumulative = (event) => {
+    this.setState({displayCumulative: event.target.checked})
+  }
+
+  setModuleFilter = (event) => {
+    this.setState({moduleFilter: event.target.value})
   }
 
   speedChanged = (event) => {

@@ -33,19 +33,19 @@ export default class Graph extends Component {
   }
   
   render() {
-    const userData = this.props.labsData
+    const {labs, users} = this.props.labsData
 
     const chartData = {
-      labels: userData[0].labs.map(day => day.date),
+      labels: labs.map(date => date.date),
       datasets: []
     }
 
-    for (const user of userData) {
+    for (const user of users) {
       if (!this.props.crazy) {
-        const color = colors[userData.indexOf(user)]
+        const color = colors[users.indexOf(user)]
         chartData.datasets.push({
-          data: user.labs.map(day => day.labs),
-          label: user.name,
+          data: labs.map(date => date.labs[user]),
+          label: user,
           // borderColor: "#3e95cd",
           borderColor: color,
           fill: false
@@ -55,8 +55,8 @@ export default class Graph extends Component {
         const color = this.getRandomColor()
         const labelString = "BOOLEANICING"
         chartData.datasets.push({
-          data: user.labs.map(day => day.labs),
-          label: labelString[userData.indexOf(user)],
+          data: labs.map(date => date.labs[user]),
+          label: labelString[users.indexOf(user)],
           borderColor: color,
           borderWidth: Math.random() * 10,
           borderDash: [Math.random() * 50, 15],
