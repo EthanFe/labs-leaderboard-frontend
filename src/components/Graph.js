@@ -59,7 +59,7 @@ export default class Graph extends Component {
           label: labelString[users.indexOf(user)],
           borderColor: color,
           borderWidth: Math.random() * 10,
-          borderDash: [Math.random() * 50, 15],
+          // borderDash: [Math.random() * 50, 15],
           lineTension: Math.random(),
           backgroundColor: color + "10",
           // steppedLine: true;
